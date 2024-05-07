@@ -1,16 +1,26 @@
-function maximalSquare(matrix) {
-  if (matrix.length === 0) return 0;
-  const rows = matrix.length;
-  const cols = matrix[0].length;
-  const dp = Array.from(Array(rows + 1), () => Array(cols + 1).fill(0));
-  let maxSquare = 0;
-  for (let i = 1; i <= rows; i++) {
-    for (let j = 1; j <= cols; j++) {
-      if (matrix[i - 1][j - 1] === "1") {
-        dp[i][j] = Math.min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]) + 1;
-        maxSquare = Math.max(maxSquare, dp[i][j]);
+const mergeSortIterative = (arr) => {
+  const merge = (left, right) => {
+    let result = [];
+    let leftIndex = 0;
+    let rightIndex = 0;
+    while (leftIndex < left.length && rightIndex < right.length) {
+      if (left[leftIndex] < right[rightIndex]) {
+        result.push(left[leftIndex]);
+        leftIndex++;
+      } else {
+        result.push(right[rightIndex]);
+        rightIndex++;
       }
     }
+    return result.concat(left.slice(leftIndex)).concat(right.slice(rightIndex));
+  };
+  const mergeSize = 2;
+  for (let i = 0; i < arr.length; i += mergeSize) {
+    for (let j = i; j < arr.length; j += mergeSize) {
+      const left = arr.slice(j, j + mergeSize / 2);
+      const right = arr.slice(j + mergeSize / 2, j + mergeSize);
+      arr.splice(j, mergeSize, ...merge(left, right));
+    }
   }
-  return maxSquare * maxSquare;
-}
+  return arr;
+};
