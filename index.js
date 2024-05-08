@@ -1,26 +1,21 @@
-const mergeSortIterative = (arr) => {
-  const merge = (left, right) => {
-    let result = [];
-    let leftIndex = 0;
-    let rightIndex = 0;
-    while (leftIndex < left.length && rightIndex < right.length) {
-      if (left[leftIndex] < right[rightIndex]) {
-        result.push(left[leftIndex]);
-        leftIndex++;
-      } else {
-        result.push(right[rightIndex]);
-        rightIndex++;
-      }
+function permuteUnique(nums) {
+  const result = [];
+  nums.sort((a, b) => a - b);
+  backtrack([], new Array(nums.length).fill(false));
+  return result;
+  function backtrack(current, used) {
+    if (current.length === nums.length) {
+      result.push([...current]);
+      return;
     }
-    return result.concat(left.slice(leftIndex)).concat(right.slice(rightIndex));
-  };
-  const mergeSize = 2;
-  for (let i = 0; i < arr.length; i += mergeSize) {
-    for (let j = i; j < arr.length; j += mergeSize) {
-      const left = arr.slice(j, j + mergeSize / 2);
-      const right = arr.slice(j + mergeSize / 2, j + mergeSize);
-      arr.splice(j, mergeSize, ...merge(left, right));
+    for (let i = 0; i < nums.length; i++) {
+      if (used[i] || (i > 0 && nums[i] === nums[i - 1] && !used[i - 1]))
+        continue;
+      current.push(nums[i]);
+      used[i] = true;
+      backtrack(current, used);
+      current.pop();
+      used[i] = false;
     }
   }
-  return arr;
-};
+}
