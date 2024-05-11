@@ -1,6 +1,6 @@
-const flattenDepth = (arr, depth = 1) =>
-  arr.reduce(
-    (a, v) =>
-      a.concat(depth > 1 && Array.isArray(v) ? flattenDepth(v, depth - 1) : v),
-    [],
-  );
+const factorialRecursive = (n) => {
+  if (n === 0 || n === 1) {
+    return 1;
+  }
+  return n * factorialRecursive(n - 1);
+};
